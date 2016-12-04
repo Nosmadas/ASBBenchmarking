@@ -11,10 +11,9 @@ namespace Message
     {
         public static string ConnectionString = "";
         public static string AmqpConnectionString = $"{ConnectionString};TransportType=Amqp";
+        public static string AmqpSuffix = "_amqp";
 
         public const int SendCount = 1000;
-
-        public static bool UseAmqp = true;
 
         public const string Basic = "Basic";
         public const string CreateQueueClientEachMessage = "CreateQueueClientEachSend";
@@ -33,29 +32,27 @@ namespace Message
         {
             return new List<Tuple<string, QueueDescription>>
             {
-                CreateQueue(Basic, UseAmqp),
-                CreateQueue(CreateQueueClientEachMessage, UseAmqp),
-                CreateQueue(AsyncSend, UseAmqp),
-                CreateQueue(PartitionedSend, UseAmqp, o => o.EnablePartitioning = true),
-                CreateQueue(AsyncPartitionedSend, UseAmqp, o => o.EnablePartitioning = true),
-                CreateQueue(ExpressSend, UseAmqp, o => o.EnableExpress = true),
-                CreateQueue(AsyncTaskList, UseAmqp),
-                CreateQueue(MultipleQueueClients, UseAmqp),
-                CreateQueue(SendBatching, UseAmqp),
-                CreateQueue(PartitionedSendBatching, UseAmqp, o => o.EnablePartitioning = true),
-                CreateQueue(ExpressSendBatching,  UseAmqp, o => o.EnableExpress = true)
+                CreateQueue(Basic),
+                CreateQueue(CreateQueueClientEachMessage),
+                CreateQueue(AsyncSend),
+                CreateQueue(PartitionedSend, o => o.EnablePartitioning = true),
+                CreateQueue(AsyncPartitionedSend, o => o.EnablePartitioning = true),
+                CreateQueue(ExpressSend, o => o.EnableExpress = true),
+                CreateQueue(AsyncTaskList),
+                CreateQueue(MultipleQueueClients),
+                CreateQueue(SendBatching),
+                CreateQueue(PartitionedSendBatching, o => o.EnablePartitioning = true),
+                CreateQueue(ExpressSendBatching, o => o.EnableExpress = true)
             };
         }
 
-        private static Tuple<string, QueueDescription> CreateQueue(string path, bool amqp, Action<QueueDescription> configure = null)
+        private static Tuple<string, QueueDescription> CreateQueue(string path, Action<QueueDescription> configure = null)
         {
-            var name = amqp ? $"{path}_amqp" : path;
-
-            var queueDescription = DefaultQueueDescription(name);
+            var queueDescription = DefaultQueueDescription(path);
 
             if (configure != null) configure(queueDescription);
 
-            return new Tuple<string, QueueDescription>(name, queueDescription);
+            return new Tuple<string, QueueDescription>(path, queueDescription);
         }
 
         public static QueueDescription DefaultQueueDescription(string path) => new QueueDescription(path)
