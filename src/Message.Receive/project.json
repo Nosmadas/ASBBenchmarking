@@ -1,0 +1,14 @@
+﻿{
+  "version": "1.0.0-*",
+  "buildOptions": {
+    "emitEntryPoint": true
+  },
+  "dependencies": {
+    "Message": "1.0.0-*",
+    "WindowsAzure.ServiceBus": "3.4.3"
+  },
+
+  "frameworks": {
+    "net452": { }
+  }
+}

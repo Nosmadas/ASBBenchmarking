@@ -1,0 +1,13 @@
+﻿{
+  "version": "1.0.0-*",
+
+  "dependencies": {
+  },
+  "frameworks": {
+    "net452": {
+      "dependencies": {
+        "WindowsAzure.ServiceBus": "3.4.3"
+      }
+    }
+  }
+}
